@@ -7,8 +7,8 @@ if [ $# -ne 0 ] ; then
 fi
 
 echo "Initialisation de l'environnement de travail..."
-# pour sauter une ligne
-echo " "
+
+echo " " # pour sauter une ligne
 
 dossier_toolbox=".sh-toolbox"
 
@@ -19,7 +19,7 @@ else
 	echo "Creation du dossier $dossier_toolbox ..."
 	mkdir $dossier_toolbox
 
-	#verifier si le dossier a ete cree avec suces
+	#verifier si le dossier a ete cree avec succes
 	if [ $? -eq 0 ] ;then
 		echo "Creation reussi !"
 	else
@@ -38,7 +38,7 @@ if [ -f $chemin_archives ] ; then
 	echo "Le fichier $fichier_archives existe deja dans $dossier_toolbox"
 else
 	echo "Creation du fichier $fichier_archives ..."
-	touch $chemin_archives
+	echo 0 > $chemin_archives
 	if [ $? -eq 0 ] ; then
 		echo "Creation reussi !"
 	else
