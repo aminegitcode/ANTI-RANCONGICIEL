@@ -56,3 +56,4 @@ if [ $nb_lignes -ne 0 ]; then
 fi
 echo " "
 echo "Initialisation terminee avec succes !"
+exit 0

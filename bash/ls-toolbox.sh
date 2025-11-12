@@ -45,13 +45,17 @@ if [ $existe -eq 0 ]; then
 	exit 3
 fi
 
-
+# verifier si une archive existe dans le dossier .sh-toolbox mais n'est pas dans le fichier archives
 for fichier in "$dossier_toolbox"/*.gz; do
     nom_fichier=$(basename "$fichier")
 
     # on envoie son résultat vers /dev/null pour ne rien afficher
-    if [ ! grep "^$nom_fichier:" "$chemin_fichier_archives" >/dev/null ]; then
+    if  ! grep "^$nom_fichier:" "$chemin_fichier_archives" >/dev/null ; then
         echo "Avertissement: $nom_fichier existe dans $dossier_toolbox mais n'est pas mentionné dans $fichier_archives"
         exit 3
     fi
 done
+
+
+
+exit 0
