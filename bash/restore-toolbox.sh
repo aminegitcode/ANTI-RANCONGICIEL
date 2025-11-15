@@ -6,34 +6,35 @@ if [ $# -ne 0 ] ; then
 fi
 
 echo " Identification des problemes..."
-
-./ls-toolbox.sh > dev/null
+dossier_toolbox=.sh-toolbox
+fichier_archives=archives
+chemin_fichier_archives="$dossier_toolbox/$fichier_archives"
 
 reponse1=0
 reponse2=0
 reponse3=0
 
-# appeler ls-toolbox pour avoir le code de sortie qui permet d'identifier les problemes et on rederige sa sorte vers dev/null
-./ls-toolbox.sh > dev/null
 
-case $? in 
-	0 )
-	echo "l'environnement de travail n'est pas corrompu ";;
+# verifier l'existence du dossier sh-toolbox
+if [ ! -d $dossier_toolbox ]; then
+	echo "Le fichier $dossier_toolbox n'existe pas"
+	echo "voulez vous initialiser l'environnement de travail (1:oui / 0:non)"
+	read reponse1
+	echo ""
+fi
 
-	1 )
-	echo "Le dossier '.sh-toolbox' n'existe pas"
-	read -p "voulez vous le creer ?  1:oui / 0:non " reponse1;;
-	
-	2 ) 
-	echo "Le fichier 'archives' n'existe pas "
-	read -p "voulez vous le creer ?  1:oui / 0:non " reponse2;;
-	
-	3 )
-	echo "Archive inexistante mentionnée dans le fichier. archives OU 
-	Archive présente dans .sh-toolbox et non mentionnée dans le fichier. archives";;
-	reponse3=1
-	
-esac
+#verifier l'existence du fichier archives
+if [ ! -f "$chemin_fichier_archives" ]; then 
+	echo "Le fichier $fichier_archives n'existe pas"
+	echo "Voulez-vous creer le fichier archives ? (1:oui / 0:non)"
+	read reponse2
+fi
+
+
+
+
+
+
 
 echo ""
 # creation du dossier .sh-toolbox avec le fichier archives en utilisant ./init-toolbox
