@@ -6,6 +6,7 @@ if [ $# -ne 0 ] ; then
 fi
 
 echo "Restauration de l'environnement de travail..."
+echo ""
 dossier_toolbox=.sh-toolbox
 fichier_archives=archives
 chemin_fichier_archives="$dossier_toolbox/$fichier_archives"
@@ -22,7 +23,11 @@ if [ ! -d $dossier_toolbox ]; then
 		echo "Echec d'initialisation"
 	fi
 	echo ""
+else
+	echo "Le dossier $dossier_toolbox existe"
 fi
+
+echo ""
 
 #verifier l'existence du fichier archives
 if [ ! -f "$chemin_fichier_archives" ]; then 
@@ -39,43 +44,69 @@ if [ ! -f "$chemin_fichier_archives" ]; then
 		echo "erreur de creation du fichier '$fichier_archives'"
 		exit 1
 	fi
-	echo""
+else
+	echo "Le fichier $fichier_archives existe"
 fi
+echo ""
 
 
+# verifier si des archives existent dans le fichier 'archives' mais pas dans le dossier '.sh-toolbox'
 tail -n +2 "$chemin_fichier_archives" | while IFS=":" read nom date cle; do
 
-	# verifier si cette archive n'exsite pas dans le dossier .sh-toolbox
+	# Verification pour chaque archive 
 	if [ ! -f "$dossier_toolbox/$nom" ] ; then 
-		echo "L'archive $nom existe dans $fichier_archives mais n'existe pas dans le dossier '$dossier_toolbox'"
-		echo "Voulez-vous supprimer $nom du fichier '$fichier_archives' ? (1:oui / 0:non)"
-		read reponse
+		echo "L'archive '$nom' existe dans '$fichier_archives' mais n'existe pas dans le dossier '$dossier_toolbox'"
+		read -p "Voulez-vous supprimer  '$nom'  du fichier '$fichier_archives' ? (1:oui / 0:non)" reponse0 </dev/tty
 		
 		# Suppression de cette archive
-		if [ $reponse -eq 1 ] ; then
+		if [ $reponse0 -eq 1 ] ; then
+			echo "suppression en cours..."
 			# Creer un fichier temporaire 
 			fichier_tmp="$dossier_toolbox/tmp"
-			head -n 1 > $fichier_tmp
+			head -n 1 "$chemin_fichier_archives" > "$fichier_tmp"
 			tail -n +2 "$chemin_fichier_archives" | grep -v "^$nom" >> "$fichier_tmp"
+			
+			# copier le fichier tmp dans 'archives'
+			mv "$fichier_tmp" "$chemin_fichier_archives"
+			if [ $? -eq 0 ]; then
+				echo "suppression reussie "
+			else
+				echo "Echec de suppression"
+			fi
+			
+			#Supprimer le fichier temporaire
+			if [ -f $fichier_tmp ] ; then
+				rm $fichier_tmp
+			fi
 		fi
-		mv "$fichier_tmp" "$chemin_fichier_archives"
 		
-		#Supprimer le fichier temporaire
-		if [ -f $fichier_tmp ] ; then
-			rm $fichier_tmp
-		fi
 	fi
 done 
 
+echo ""
+
+# verifier si une archive existe dans le dossier .sh-toolbox mais n'est pas dans le fichier archives
+for fichier in "$dossier_toolbox"/*.gz; do
+    nom_fichier=$(basename "$fichier")
+
+    
+	if  ! grep -q "^$nom_fichier:" "$chemin_fichier_archives"  ; then
+	        echo "Avertissement: $nom_fichier existe dans $dossier_toolbox mais n'est pas mentionné dans le fichier '$fichier_archives'"
+	        echo "Voulez-vous supprimer le fichier $fichier du dossier $dossier_toolbox ? (1:oui / 0:non)"
+	        read reponse1
+		if [ $reponse1 -eq 1 ] ; then
+        		echo "suppression en cours..."
+        		rm "$fichier"
+        		if [ $? -eq 0 ]; then
+        			echo "suppression reussie"
+        		else
+        			echo "Echec de suppression"
+        		fi
+        		echo ""
+    		fi	
+	fi
+done
 
 
-
-
-
-
-
-
-
-
-echo "L'environnement de travail est bien initialise"
+echo "Restauration reussie "
 exit 0

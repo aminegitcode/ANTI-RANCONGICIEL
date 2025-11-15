@@ -29,7 +29,7 @@ archive_existe_pas=""
 compteur=0
 # lire les lignes du fichier
 while IFS=":" read nom date cle; do
-	#Verifier qu'on va lire la premiere ligne
+	#Verifier qu'on va pas lire la premiere ligne
  	if [ $compteur -eq 0 ] ; then 
  		compteur=$((compteur + 1))
  		continue
@@ -44,16 +44,14 @@ while IFS=":" read nom date cle; do
 	# verifier si cette archive n'exsite pas 
 	if [ ! -f "$dossier_toolbox/$nom" ] ; then 
 		existe=0 
-		archive_existe_pas=$nom
+		echo "Erreur: l'archive $nom est presente dans le fcihier 'archives' mais n'existe pas dans le dossier '.sh-toolbox'"
+		
 	fi
 	
 done < "$chemin_fichier_archives"
 
 
-if [ $existe -eq 0 ]; then
-	echo "Erreur: l'archive $archive_existe_pas est presente dans le fcihier 'archives' mais n'existe pas dans le dossier '.sh-toolbox'"
-	exit 3
-fi
+echo ""
 
 # verifier si une archive existe dans le dossier .sh-toolbox mais n'est pas dans le fichier archives
 for fichier in "$dossier_toolbox"/*.gz; do
@@ -62,10 +60,13 @@ for fichier in "$dossier_toolbox"/*.gz; do
     
     if  ! grep -q "^$nom_fichier:" "$chemin_fichier_archives"  ; then
         echo "Avertissement: $nom_fichier existe dans $dossier_toolbox mais n'est pas mentionné dans le fichier '$fichier_archives'"
-        exit 3
+        existe=0
     fi
 done
 
-
+# sortir avec 3 si une archive presente dans fichier 'archives' mais n'existe pas dans le dossier '.sh-toolbox' / ou si une archive existe dans le dossier '.sh-toolbox' mais pas dans le fichier 'archives'
+if [ $existe -eq 0 ] ; then
+	exit 3
+fi
 
 exit 0
