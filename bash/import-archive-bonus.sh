@@ -52,12 +52,12 @@ for archive in "$@"; do
    
    
    
-	touch ".sh-toolbox/tmp"
+	
 	date_ajout=$(date +"%d%m%y%H%M%S")
 	# Mise à jour du fichier archives
 	if grep -q "^$nom_archive:" "$fichier_archives"; then
 		# Archive déjà présente → on met à jour sa date
-		
+		touch ".sh-toolbox/tmp"
 		tmp_file=".sh-toolbox/tmp"
 		
 		# On saute la première ligne (le compteur)	
@@ -73,12 +73,18 @@ for archive in "$@"; do
 	        fi
 	    done
 	
-	    mv "$tmp_file" "$fichier_archives"
-	    echo "Date mise à jour pour '$nom_archive'."
+		mv "$tmp_file" "$fichier_archives"
+		echo "Date mise à jour pour '$nom_archive'."
+	    
+		if [ -f $tmp_file ] ; then
+			rm $tmp_file
+		fi
 	
 		        
         
     else
+    	touch ".sh-toolbox/tmp"
+	tmp_file=".sh-toolbox/tmp"
         compteur=$(head -n 1 "$fichier_archives")
         compteur=$((compteur + 1))
        
@@ -87,12 +93,15 @@ for archive in "$@"; do
             echo "$compteur" 
             tail -n +2 "$fichier_archives" 
             echo "$nom_archive:$date_ajout:" 
-        } > ".sh-toolbox/tmpp"
+        } > "$tmp_file"
         
-        cat ".sh-toolbox/tmpp" > ".sh-toolbox/archives"
+        cat "$tmp_file" > ".sh-toolbox/archives"
         if [  $? -ne 0 ] ; then 
         	echo "Erreur : mise à jour du fichier archives impossible."
             exit 4
+	fi
+	if [ -f $tmp_file ] ; then
+			rm $tmp_file
 	fi
 
         echo "Nouvelle archive '$nom_archive' ajoutée dans l'historique."
