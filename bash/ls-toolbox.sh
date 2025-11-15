@@ -25,12 +25,17 @@ fi
 # on suppose que toutes les archives existent
 existe=1
 
+compteur=0
 # lire les lignes du fichier
-while IFS=":" read nom date cle; do
+ while IFS=":" read nom date cle; do
+ 	if [ $compteur -eq 0 ] ; then 
+ 		compteur=$((compteur + 1))
+ 		continue
+ 	fi
 	echo "Nom: $nom "
 	echo "Date: $date"
 	echo "Cle: $cle"
-	echo "------------"
+
 	
 	# verifier si cette archive n'exsite pas 
 	if [ ! -f "$dossier_toolbox/$nom" ] ; then 

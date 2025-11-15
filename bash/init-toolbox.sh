@@ -51,6 +51,7 @@ fi
 # verifier si d'autres fichiers ou dossiers se trouvent dans .sh-toolbox
 nb_lignes=` ls .sh-toolbox | grep -v  "archives" | wc -l`
 if [ $nb_lignes -ne 0 ]; then
+	echo ""
 	echo "d'autres fichiers/dossiers existent dans le dossier sh-toolbox"
 	exit 2
 fi
