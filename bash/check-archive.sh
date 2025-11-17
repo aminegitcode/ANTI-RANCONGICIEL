@@ -26,8 +26,8 @@ done
 echo ""
 
 # Choisir une archive 
-read -p "Selectionnez une archive (1/2.......) : " choix
-
+echo "Selectionnez une archive (1/2.......) : " 
+read choix
 
 # Recuperer le nom de l'archive 
 i=0
@@ -43,7 +43,7 @@ while IFS=":" read nom reste; do
 		break
 	fi
 	i=$((i+1))
-done < $fichier_archives
+done < "$fichier_archives"
 
 archive="$dossier/$nom_archive"
 
@@ -75,6 +75,15 @@ log_fichier="$tmp_dossier/var/log/auth.log"
 if [ ! -f "$log_fichier" ]; then
     echo "Erreur : fichier de logs introuvable."
     exit 4
+fi
+
+# Demander si l'utilisateur veut afficher le fichier log
+echo "Voulez-vous parcourir et affficher ele fichier Log (1:oui / 0:non)"
+read reponse
+if [ $reponse -eq 1 ]; then
+	while read ligne ; do	
+		echo "$ligne"
+	done < "$log_fichier"
 fi
 
 echo "$log_fichier"
