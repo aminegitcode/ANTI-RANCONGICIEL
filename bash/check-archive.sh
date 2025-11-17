@@ -77,7 +77,7 @@ if [ ! -f "$log_fichier" ]; then
     exit 4
 fi
 
-# Demander si l'utilisateur veut afficher le fichier log
+# Demander si l'utilisateur s'il veut afficher le fichier log
 echo "Voulez-vous parcourir et affficher ele fichier Log (1:oui / 0:non)"
 read reponse
 if [ $reponse -eq 1 ]; then
@@ -86,11 +86,48 @@ if [ $reponse -eq 1 ]; then
 	done < "$log_fichier"
 fi
 
-echo "$log_fichier"
+
+log_tmp="$dossier/tmp_log"
+
+# Recuperer toutes les tentatives de connexions reussies de admin et copier la derniere tentative dans un fichier temporaire 
+grep "Accepted password for admin" "$log_fichier" | tail -n 1 > "$log_tmp"
+
+
+# Recuperer et afficher la date et l'heure de la derniere connexion de admin
+read mois jour heure reste < "$log_tmp"
+echo ""
+echo "La derniere connexion de l’utilisateur  'admin' :"
+echo "$mois $jour $heure"
+echo""
+
+
+# Afficher les fichiers modifiés  apres la derniere connexion de admin
+data_dossier="$tmp_dossier/data"
+data_tmp="$dossier/data_tmp"
+
+date_connexion_admin=$(date -d "$mois $jour $heure" +%s) # transformer la date de la derniere connexion de l'admin en format unix ( on va l'utiliser plus pour comparer avec la date de modification des fichiers)
+echo ""
+echo "Fichiers modifiés après la dernière connexion de admin :"
+find "$data_dossier" -type f | while read fichier ; do
+	
+	$date_modif_fichier=$(stat -c %y "$fichier"
+	
+	
+	if [ "$date_modif_fichier" -gt "$date_connexion_admin" ] ;then 
+		echo "sdsdsdsdsdsd"
+		echo "$nom"
+	fi
+done
+
+echo ""
+	
+	
 
 
 
 
-rm -rf $tmp_dossier
+rm "$data_tmp"
+rm "$log_tmp"
+rm -rf "$tmp_dossier"
 exit 0
 
