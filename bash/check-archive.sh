@@ -151,9 +151,9 @@ fi
 
 
 
-# Suuprimer les fichiers et dossiers temporaires
+# Suprimer les fichiers et dossiers temporaires
 rm "$data_tmp"
 rm "$log_tmp"
-rm -rf "$tmp_dossier"
+rm -rf "$tmp_dossier" # forcer la suppression de "tmp_dossier" avec -f
 exit 0
 
