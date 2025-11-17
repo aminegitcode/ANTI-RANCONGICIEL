@@ -98,34 +98,60 @@ read mois jour heure reste < "$log_tmp"
 echo ""
 echo "La derniere connexion de l’utilisateur  'admin' :"
 echo "$mois $jour $heure"
-echo""
+echo ""
 
 
 # Afficher les fichiers modifiés  apres la derniere connexion de admin
 data_dossier="$tmp_dossier/data"
 data_tmp="$dossier/data_tmp"
+find "$data_dossier" -type f > "$data_tmp" # Copier tous les fichiers qui existent dans le dossier data dans un fichier temporaire
 
 date_connexion_admin=$(date -d "$mois $jour $heure" +%s) # transformer la date de la derniere connexion de l'admin en format unix ( on va l'utiliser plus pour comparer avec la date de modification des fichiers)
-echo ""
-echo "Fichiers modifiés après la dernière connexion de admin :"
-find "$data_dossier" -type f | while read fichier ; do
+
+echo "Fichiers modifiés apres la derniere connexion de admin :"
+nb_fich=0
+while read fichier ; do
+	# Recuperer la date de modification du fichier 
+	date_modif_fichier=$(stat -c %Y "$fichier")
 	
-	$date_modif_fichier=$(stat -c %y "$fichier"
-	
-	
+	# Comparer la date de modification du fichier avec la date de la derniere connexion de admin
 	if [ "$date_modif_fichier" -gt "$date_connexion_admin" ] ;then 
-		echo "sdsdsdsdsdsd"
-		echo "$nom"
+		echo "$fichier"
+		nb_fich=$((nb_fich+1))
 	fi
-done
+done  < "$data_tmp"
+# Afficher un message si accun fichier n'est trouvé
+if [ $nb_fich -eq 0 ] ;then
+	echo "Accun fichier"
+fi
 
 echo ""
 	
 	
+# Afficher les fichiers modifiés avant la derniere connexion de admin
+echo "Fichiers modifiés avant la derniere connexion de admin :"
+nb_fich=0
+while read fichier ; do
+	# Recuperer la date de modification du fichier 
+	date_modif_fichier=$(stat -c %Y "$fichier")
+	
+	# Comparer la date de modification du fichier avec la date de la derniere connexion de admin
+	if [ "$date_modif_fichier" -lt "$date_connexion_admin" ] ;then 
+		echo "$fichier"
+		nb_fich=$((nb_fich + 1))
+		
+	fi
+done <  "$data_tmp"
+# Afficher un message si accun fichier n'est trouvé
+if [ $nb_fich -eq 0 ] ;then
+	echo "Accun fichier"
+	
+fi
 
 
 
 
+# Suuprimer les fichiers et dossiers temporaires
 rm "$data_tmp"
 rm "$log_tmp"
 rm -rf "$tmp_dossier"
