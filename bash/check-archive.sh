@@ -78,7 +78,7 @@ if [ ! -f "$log_fichier" ]; then
 fi
 
 # Demander si l'utilisateur s'il veut afficher le fichier log
-echo "Voulez-vous parcourir et affficher ele fichier Log (1:oui / 0:non)"
+echo "Voulez-vous parcourir et affficher le fichier Log (1:oui / 0:non)"
 read reponse
 if [ $reponse -eq 1 ]; then
 	while read ligne ; do	

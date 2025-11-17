@@ -59,7 +59,7 @@ for archive in "$@"; do
    
    
 	
-	date_ajout=$(date +"%d%m%y %H%M%S")
+	date_ajout=$(date +"%y%m%d-%H%M%S")
 	
 	# Mise à jour du fichier archives
 	
@@ -68,8 +68,8 @@ for archive in "$@"; do
 	tmp_file=".sh-toolbox/tmp"
 	
 	# verifier si l'archive est prensente dans le fichier archives
-	if grep -q "^$nom_archive:" "$fichier_archives"; then
-		# Archive déjà présente → on met à jour sa date
+	if grep "^$nom_archive:" "$fichier_archives" > /dev/null 2>&1 ; then
+		# Archive déja présente : on met à jour sa date
 		
 		# On recupere la premiere ligne (le compteur)	
 		compteur=$(head -n 1 "$fichier_archives")
@@ -87,9 +87,6 @@ for archive in "$@"; do
 		# copier le contenu du fichier tmp vers le fichier 'archives'
 		mv "$tmp_file" "$fichier_archives"
 		echo "Date mise à jour pour '$nom_archive'."
-	    	
-	    	
-	
 	
     	else
     		#Recuperer la premiere ligne pour incrementer sa valeur
@@ -97,11 +94,11 @@ for archive in "$@"; do
         	compteur=$((compteur + 1))
        	
 		# Sauvegarder les changements dans le fichier tmp
-        	{
-        	    echo "$compteur" 
-        	    tail -n +2 "$fichier_archives" 
-        	    echo "$nom_archive:$date_ajout:" 
-        	} > "$tmp_file"
+        	
+        	    echo "$compteur" > "$tmp_file"
+        	    tail -n +2 "$fichier_archives" >> "$tmp_file"
+        	    echo "$nom_archive:$date_ajout:" >> "$tmp_file"
+        	 
         	
         	cat "$tmp_file" > "$fichier_archives"
         	if [  $? -ne 0 ] ; then 
@@ -116,6 +113,8 @@ for archive in "$@"; do
 		if [ -f $tmp_file ] ; then
 			rm $tmp_file
 		fi
+		
+	echo ""
 done
 
 
