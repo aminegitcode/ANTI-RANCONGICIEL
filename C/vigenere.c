@@ -16,6 +16,51 @@ void chiffrer_vigenere(char *texte, const char *cle) {
     }
 }
 
+// Déchiffrement Vigenère sur tous les caractères
+void dechiffrer(char texte[], char cle[]) {
+    
+    // alphabet Base64 sous forme de tableau
+    const char alphabet[64] = {
+        'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
+        'Q','R','S','T','U','V','W','X','Y','Z',
+        'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
+        'q','r','s','t','u','v','w','x','y','z',
+        '0','1','2','3','4','5','6','7','8','9',
+        '+','/'
+    };
+
+    int longeur_cle = strlen(cle);
+    int j = 0;
+
+    for (int i = 0; texte[i]; i++) {
+        // chercher la position du caractere dans l'alphabet
+        int pos1 = -1;
+        for (int k = 0; k < 64; k++) {
+            if (alphabet[k] == texte[i]) {
+                pos1 = k;
+                break;
+            }
+        }
+        if (p1 != -1){
+
+        // cherche position de la cle
+        int pos2 = -1;
+        for (int k = 0; k < 64; k++) {
+            if (alphabet[k] == cle[j % len]) {
+                p2 = k;
+                break;
+            }
+        }
+
+        // Déchiffrement Vigenère modulo 64
+        int pos = (p1 - p2 + 64) % 64;
+        texte[i] = alphabet[pos];
+        j++;
+    }
+        }  // ignore caractères non Base64 (ex: '=')
+}
+
+
 char* lire_fichier(const char *nom_fichier) {
     FILE *fichier;
     char *contenu;
