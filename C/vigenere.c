@@ -5,7 +5,7 @@ void chiffrer_vigenere(char *texte, const char *cle) {
     int len = strlen(cle), j = 0; // recuperer la longueur de la cle 
 
     for (int i=0; texte[i]; i++) {
-        char *p1 = strchr(alphabet, texte[i]);   // cherche le caractère texte[i] dans l’alphabet
+        char *p1 = strchr(alphabet, texte[i]);   // cherche le caractere texte[i] dans l’alphabet
         if(!p1) continue;//Ignore les caractères non Base64 
 
         char *p2 = strchr(alphabet, cle[j % len]);          // position clé
@@ -16,7 +16,7 @@ void chiffrer_vigenere(char *texte, const char *cle) {
     }
 }
 
-// Déchiffrement Vigenère sur tous les caractères
+// Dechiffrement Vigenere sur tous les caracteres
 void dechiffrer(char texte[], char cle[]) {
     
     // alphabet Base64 sous forme de tableau
@@ -34,30 +34,30 @@ void dechiffrer(char texte[], char cle[]) {
 
     for (int i = 0; texte[i]; i++) {
         // chercher la position du caractere dans l'alphabet
-        int pos1 = -1;
+        int pos_carctere = -1;
         for (int k = 0; k < 64; k++) {
             if (alphabet[k] == texte[i]) {
-                pos1 = k;
+                pos_carctere = k;
                 break;
             }
         }
-        if (p1 != -1){
+        if (pos_carctere != -1){ // Verifier 
 
-        // cherche position de la cle
-        int pos2 = -1;
-        for (int k = 0; k < 64; k++) {
-            if (alphabet[k] == cle[j % len]) {
-                p2 = k;
-                break;
+            // Cherche position de la cle
+            int pos_cle = -1;
+            for (int k = 0; k < 64; k++) {
+                if (alphabet[k] == cle[j % longeur_cle]) {
+                    pos_cle = k;
+                    break;
+                }
             }
-        }
 
-        // Déchiffrement Vigenère modulo 64
-        int pos = (p1 - p2 + 64) % 64;
-        texte[i] = alphabet[pos];
-        j++;
-    }
-        }  // ignore caractères non Base64 (ex: '=')
+            // Dechiffrement Vigenère modulo 64
+            int pos = (pos_carctere - pos_cle + 64) % 64;
+            texte[i] = alphabet[pos];
+            j++;
+        }
+    } 
 }
 
 

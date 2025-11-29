@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     
     /*  dechiffrement */
     printf("Application du dechiffrement Vigenere...\n");
-    chiffrer_vigenere(contenu_fichier, cle);
+    dechiffrer(contenu_fichier, cle);
     
     /* ecriture du resultat */
     if (!ecrire_fichier(nom_fichier, contenu_fichier)) {
