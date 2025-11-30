@@ -5,15 +5,15 @@ int main(int argc, char *argv[]) {
     
     /* verifier les arguments */
     if (argc != 3) {
-        printf("=== PROGRAMME DECHIFFREMENT VIGENERE ===\n");
+        printf("-------- DECHIFFREMENT --------\n");
         printf("Utilisation: %s <clé> <fichier>\n", argv[0]);
         printf("\n");
         return 1;
     }
     
     /* recuperation des arguments */
-     char cle[] = argv[1];
-    const char nom_fichier[] = argv[2];
+     char *cle = argv[1];
+    char *nom_fichier = argv[2];
     
     printf("Dechiffrement du fichier: %s\n", nom_fichier);
     printf("Avec la cle: %s\n", cle);
