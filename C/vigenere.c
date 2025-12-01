@@ -71,7 +71,7 @@ char* findkey (char *txt_clair,char*  txt_chiff){
         '+','/'
     };
     int longeur=strlen(txt_clair); 
-    char *cle=(char*)malloc(sizeof(longeur)); 
+    char *cle=(char*)malloc(longeur); 
     int j=0;
     
     
@@ -101,7 +101,7 @@ char* lire_fichier( char *nom_fichier) {
     long taille;
     
     /* Ouvrir le fichier en lecture */
-    fichier = fopen(nom_fichier, "rb");
+    fichier = fopen(nom_fichier, "r");
     if (fichier == NULL) {
         fprintf(stderr, "Erreur: Impossible d'ouvrir %s\n", nom_fichier);
         return NULL;
@@ -115,14 +115,13 @@ char* lire_fichier( char *nom_fichier) {
     /* Allouer la mémoire pour le contenu*/
     contenu = (char*)malloc(taille);
     if (contenu == NULL) {
-        fprintf(stderr, "Erreur: Allocation mémoire échouée\n");
+        printf( "Erreur: Allocation mémoire échouée\n");
         fclose(fichier);
         return NULL;
     }
     
     /* Lire le fichier */
     fread(contenu, 1, taille, fichier);
-    contenu[taille] = '\0';
     
     fclose(fichier);
     return contenu;
@@ -132,9 +131,9 @@ char* lire_fichier( char *nom_fichier) {
 int ecrire_fichier( char *nom_fichier,  char *contenu) {
     FILE *fichier;
     
-    fichier = fopen(nom_fichier, "wb");
+    fichier = fopen(nom_fichier, "w");
     if (fichier == NULL) {
-        fprintf(stderr, "Erreur: Impossible de créer %s\n", nom_fichier);
+        printf("Erreur: Impossible de créer %s\n", nom_fichier);
         return 0;
     }
     
