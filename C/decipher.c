@@ -3,41 +3,40 @@
 int main(int argc, char *argv[]) {
     char *contenu_fichier;
     
-    /* verifier les arguments */
+    /* Verifier les arguments */
     if (argc != 3) {
-        printf("-------- DECHIFFREMENT --------\n");
         printf("Utilisation: %s <clé> <fichier>\n", argv[0]);
         printf("\n");
         return 1;
     }
     
-    /* recuperation des arguments */
+    /* Récuperation des arguments */
      char *cle = argv[1];
     char *nom_fichier = argv[2];
     
-    printf("Dechiffrement du fichier: %s\n", nom_fichier);
-    printf("Avec la cle: %s\n", cle);
+    printf("Déchiffrement du fichier: %s\n", nom_fichier);
+    printf("Avec la clé: %s\n \n", cle);
     
-    /* lecture du fichier*/
+    /* Lecture du fichier*/
     contenu_fichier = lire_fichier(nom_fichier);
     if (contenu_fichier == NULL) {
         return 1;
     }
     
-    /*  dechiffrement */
-    printf("Application du dechiffrement Vigenere...\n");
+    /*  Dechiffrement */
+    printf("Déchiffrement...\n");
     dechiffrer(contenu_fichier, cle);
     
-    /* ecriture du resultat */
+    /* Ecriture du résultat */
     if (!ecrire_fichier(nom_fichier, contenu_fichier)) {
         free(contenu_fichier);
         return 1;
     }
     
-    printf("Dechiffrement terminé avec succès!\n");
+    printf("Déchiffrement terminé avec succès!\n");
     
     
-    /* liberation de la memoire */
+    /* Liberation de la mémoire */
     free(contenu_fichier);
     
     return 0;

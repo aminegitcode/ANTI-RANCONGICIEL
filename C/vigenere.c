@@ -16,7 +16,7 @@ void chiffrer_vigenere(char *texte, const char *cle) {
     }
 }
 
-// Dechiffrement Vigenere sur tous les caracteres
+// Dechiffrement 
 void dechiffrer(char texte[], char cle[]) {
     
     // alphabet Base64 sous forme de tableau
