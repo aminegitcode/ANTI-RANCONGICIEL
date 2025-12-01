@@ -53,16 +53,44 @@ void dechiffrer(char texte[], char cle[]) {
             int pos_cle = position(cle[j%longeur_cle],alphabet,64);
 
             // Dechiffrement modulo 64
-            int pos = (pos_carctere - pos_cle + 64) % 64;
+            int pos = (pos_carctere - pos_cle + 64) % 64; // On ajoute (+64) pour eviter le cas negatif (pos_cle > pos_caractere)
             texte[i] = alphabet[pos];
             j++;
         }
     } 
 }
 
+char* findkey (char *txt_clair,char*  txt_chiff){
+    // Alphabet Base64 
+    char alphabet[64] = {
+        'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
+        'Q','R','S','T','U','V','W','X','Y','Z',
+        'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
+        'q','r','s','t','u','v','w','x','y','z',
+        '0','1','2','3','4','5','6','7','8','9',
+        '+','/'
+    };
+    int longeur=strlen(txt_clair); 
+    char *cle=(char*)malloc(sizeof(longeur)); 
+    int j=0;
+    
+    
+    for(int i=0;i<longeur;i++){
+    //Trouver les positions des caracterés
+      int pos_clair=position(txt_clair[i],alphabet,64); 
+      int pos_chiff=position(txt_chiff[i],alphabet,64);
+      
+      //Verifier si les deux caracteres existent dans la liste alphabet base64
+      if(pos_clair!=-1 && pos_chiff!=-1){
+        int pos_cle=(pos_chiff - pos_clair +64 ) % 64;
+        cle[j]=alphabet[pos_cle];
+        j++;
+      }
+    }
+    
+    return cle;
 
-
-
+}
 
 
 
@@ -73,7 +101,7 @@ char* lire_fichier( char *nom_fichier) {
     long taille;
     
     /* Ouvrir le fichier en lecture */
-    fichier = fopen(nom_fichier, "r");
+    fichier = fopen(nom_fichier, "rb");
     if (fichier == NULL) {
         fprintf(stderr, "Erreur: Impossible d'ouvrir %s\n", nom_fichier);
         return NULL;
@@ -84,7 +112,7 @@ char* lire_fichier( char *nom_fichier) {
     taille = ftell(fichier);
     fseek(fichier, 0, SEEK_SET);
     
-    /* Allouer la mémoire nécessaire */
+    /* Allouer la mémoire pour le contenu*/
     contenu = (char*)malloc(taille);
     if (contenu == NULL) {
         fprintf(stderr, "Erreur: Allocation mémoire échouée\n");
@@ -104,7 +132,7 @@ char* lire_fichier( char *nom_fichier) {
 int ecrire_fichier( char *nom_fichier,  char *contenu) {
     FILE *fichier;
     
-    fichier = fopen(nom_fichier, "w");
+    fichier = fopen(nom_fichier, "wb");
     if (fichier == NULL) {
         fprintf(stderr, "Erreur: Impossible de créer %s\n", nom_fichier);
         return 0;
