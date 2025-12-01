@@ -12,8 +12,8 @@ int main(int argc, char *argv[]) {
     }
     
     /* recuperation des arguments */
-    const char *cle = argv[1];
-    const char *nom_fichier = argv[2];
+    char *cle = argv[1];
+    char *nom_fichier = argv[2];
     
     printf("Chiffrement du fichier: %s\n", nom_fichier);
     printf("Avec la clé: %s\n", cle);

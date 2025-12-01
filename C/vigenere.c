@@ -2,7 +2,7 @@
 
 void chiffrer_vigenere(char *texte, const char *cle) {
     const char *alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    int len = strlen(cle), j = 0; // recuperer la longueur de la cle 
+    int len = strlen(cle), j = 0; // Récuperer la longueur de la cle 
 
     for (int i=0; texte[i]; i++) {
         char *p1 = strchr(alphabet, texte[i]);   // cherche le caractere texte[i] dans l’alphabet
@@ -16,11 +16,22 @@ void chiffrer_vigenere(char *texte, const char *cle) {
     }
 }
 
+// Trouver la position d'un carctere dans une chaine 
+int position (char caractere, char liste_caractere[],int longeur_liste){
+  for (int i=0; i<longeur_liste; i++){
+    if (liste_caractere[i]==caractere){
+      return i;
+    }
+  }
+  return -1 ;
+}
+
+
 // Dechiffrement 
 void dechiffrer(char texte[], char cle[]) {
     
-    // alphabet Base64 sous forme de tableau
-    const char alphabet[64] = {
+    // Alphabet Base64 
+    char alphabet[64] = {
         'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
         'Q','R','S','T','U','V','W','X','Y','Z',
         'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
@@ -33,26 +44,15 @@ void dechiffrer(char texte[], char cle[]) {
     int j = 0;
 
     for (int i = 0; texte[i]; i++) {
-        // chercher la position du caractere dans l'alphabet
-        int pos_carctere = -1;
-        for (int k = 0; k < 64; k++) {
-            if (alphabet[k] == texte[i]) {
-                pos_carctere = k;
-                break;
-            }
-        }
-        if (pos_carctere != -1){ // Verifier 
+        // Chercher la position du caractére dans l'alphabet
+        int pos_carctere = position(texte[i],alphabet,64);
+        
+        if (pos_carctere != -1){ 
 
-            // Cherche position de la cle
-            int pos_cle = -1;
-            for (int k = 0; k < 64; k++) {
-                if (alphabet[k] == cle[j % longeur_cle]) {
-                    pos_cle = k;
-                    break;
-                }
-            }
+            // Chercher la position de la clé
+            int pos_cle = position(cle[j%longeur_cle],alphabet,64);
 
-            // Dechiffrement Vigenère modulo 64
+            // Dechiffrement modulo 64
             int pos = (pos_carctere - pos_cle + 64) % 64;
             texte[i] = alphabet[pos];
             j++;
@@ -61,13 +61,19 @@ void dechiffrer(char texte[], char cle[]) {
 }
 
 
-char* lire_fichier(const char *nom_fichier) {
+
+
+
+
+
+// Lire un fichier
+char* lire_fichier( char *nom_fichier) {
     FILE *fichier;
     char *contenu;
     long taille;
     
-    /* Ouvrir le fichier en lecture binaire pour garantir la lecture du fichier sans transformation */
-    fichier = fopen(nom_fichier, "rb");
+    /* Ouvrir le fichier en lecture */
+    fichier = fopen(nom_fichier, "r");
     if (fichier == NULL) {
         fprintf(stderr, "Erreur: Impossible d'ouvrir %s\n", nom_fichier);
         return NULL;
@@ -79,7 +85,7 @@ char* lire_fichier(const char *nom_fichier) {
     fseek(fichier, 0, SEEK_SET);
     
     /* Allouer la mémoire nécessaire */
-    contenu = (char*)malloc(taille + 1);/*on ajoute un octet supplémentaire pour terminer la chaîne par '\0'*/
+    contenu = (char*)malloc(taille);
     if (contenu == NULL) {
         fprintf(stderr, "Erreur: Allocation mémoire échouée\n");
         fclose(fichier);
@@ -93,10 +99,12 @@ char* lire_fichier(const char *nom_fichier) {
     fclose(fichier);
     return contenu;
 }
-int ecrire_fichier(const char *nom_fichier, const char *contenu) {
+
+// Ecrire dans un fichier
+int ecrire_fichier( char *nom_fichier,  char *contenu) {
     FILE *fichier;
     
-    fichier = fopen(nom_fichier, "wb");
+    fichier = fopen(nom_fichier, "w");
     if (fichier == NULL) {
         fprintf(stderr, "Erreur: Impossible de créer %s\n", nom_fichier);
         return 0;
