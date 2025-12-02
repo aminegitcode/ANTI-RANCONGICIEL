@@ -13,11 +13,11 @@ OBJ_FINDKEY=findkey.o $(VIGENERE)
 all: $(OBJ)
 
 cipher: $(OBJ_CIPHER)
-	$(CC) $(OBJ1) -o cipher
+	$(CC) $(OBJ_CIPHER) -o cipher
 decipher: $(OBJ_DECIPHER)
-	$(CC) $(OBJ2) -o decipher 
+	$(CC) $(OBJ_DECIPHER) -o decipher 
 findkey: $(OBJ_FINDKEY)
-	$(CC) $(OBJ3) -o decipher 	
+	$(CC) $(OBJ_DECIPHER) -o decipher 	
 	
 	
 	
