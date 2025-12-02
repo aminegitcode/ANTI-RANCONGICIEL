@@ -70,12 +70,12 @@ char* findkey (char *txt_clair,char*  txt_chiff){
         '0','1','2','3','4','5','6','7','8','9',
         '+','/'
     };
-    int longeur=strlen(txt_clair); 
-    char *cle=(char*)malloc(longeur); 
+    int longueur=strlen(txt_clair); 
+    char *cle=(char*)malloc(longueur); 
     int j=0;
     
     
-    for(int i=0;i<longeur;i++){
+    for(int i=0;i<longueur;i++){
     //Trouver les positions des caracterés
       int pos_clair=position(txt_clair[i],alphabet,64); 
       int pos_chiff=position(txt_chiff[i],alphabet,64);
@@ -84,11 +84,31 @@ char* findkey (char *txt_clair,char*  txt_chiff){
       if(pos_clair!=-1 && pos_chiff!=-1){
         int pos_cle=(pos_chiff - pos_clair +64 ) % 64;
         cle[j]=alphabet[pos_cle];
+        printf("\n----- %c ----\n",cle[j]);
         j++;
       }
     }
     
     return cle;
+
+}
+
+//Calculer la période de la clé trouvé dans findkey
+int periode(char chaine[]){
+  int n=strlen(chaine);
+  
+  for (int periode=0;periode<n/2;periode++){
+    temp=1;
+    for(int i=0; i< n-periode;i++){
+      if(chaine[i]!=chaine[i+p]){
+        temp=0;
+        break
+      }
+    }
+    if(temp){
+      return p
+    }
+  }
 
 }
 

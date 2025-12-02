@@ -9,6 +9,8 @@
 
 void chiffrer_vigenere(char *texte, const char *cle);
 void dechiffrer(char texte[], char cle[]) ;
+char* findkey (char *txt_clair,char*  txt_chiff);
+int position (char caractere, char liste_caractere[],int longeur_liste);
 
 char* lire_fichier( char *nom_fichier);
 int ecrire_fichier( char *nom_fichier, char *contenu);
