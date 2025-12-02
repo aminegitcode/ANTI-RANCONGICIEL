@@ -72,7 +72,10 @@ char* findkey (char *txt_clair,char*  txt_chiff){
     };
     int longueur=strlen(txt_clair); 
     char *cle=(char*)malloc(longueur); 
-    int j=0;
+    char *cle_finale=(char*)malloc(longueur); 
+  
+
+    int j=0; //Indice pour la chaine clé
     
     
     for(int i=0;i<longueur;i++){
@@ -82,34 +85,44 @@ char* findkey (char *txt_clair,char*  txt_chiff){
       
       //Verifier si les deux caracteres existent dans la liste alphabet base64
       if(pos_clair!=-1 && pos_chiff!=-1){
-        int pos_cle=(pos_chiff - pos_clair +64 ) % 64;
+        int pos_cle=(pos_chiff - pos_clair +64 ) % 64; // Trouver l'indice du caractére de la clé
         cle[j]=alphabet[pos_cle];
-        printf("\n----- %c ----\n",cle[j]);
         j++;
       }
     }
+     cle[j] = '\0'; 
+ 
+     
+     // Trouver la periode
+     int p=periode(cle,j);
+     strncpy(cle_finale,cle,p);
+     cle_finale[p]='\0';
+     free(cle);
     
-    return cle;
+
+    return cle_finale;
 
 }
 
 //Calculer la période de la clé trouvé dans findkey
-int periode(char chaine[]){
-  int n=strlen(chaine);
+int periode(char *chaine, int n){
+
   
-  for (int periode=0;periode<n/2;periode++){
-    temp=1;
+  for (int periode=1;periode<n/2;periode++){
+    int temp=1;
     for(int i=0; i< n-periode;i++){
-      if(chaine[i]!=chaine[i+p]){
+      
+      if(chaine[i]!=chaine[i+periode]){
         temp=0;
-        break
+        break;
       }
     }
     if(temp){
-      return p
+      return periode;
     }
   }
 
+  return n;
 }
 
 
@@ -142,6 +155,7 @@ char* lire_fichier( char *nom_fichier) {
     
     /* Lire le fichier */
     fread(contenu, 1, taille, fichier);
+    contenu[taille] = '\0';
     
     fclose(fichier);
     return contenu;
