@@ -10,14 +10,14 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     
-    /* Récuperation des arguments */
+    // Récuperation des arguments 
      char *cle = argv[1];
     char *nom_fichier = argv[2];
     
     printf("Déchiffrement du fichier: %s\n", nom_fichier);
     printf("Avec la clé: %s\n \n", cle);
     
-    /* Lecture du fichier*/
+    // Lecture du fichier
     contenu_fichier = lire_fichier(nom_fichier);
     if (contenu_fichier == NULL) {
         return 1;
