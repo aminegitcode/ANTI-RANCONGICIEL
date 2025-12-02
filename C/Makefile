@@ -4,16 +4,19 @@ CC=gcc
 
 VIGENERE=vigenere.o
 VIGENERE_SRC=vigenere.c vigenere.h
-OBJ1=cipher.o $(VIGENERE)
-OBJ2=decipher.o $(VIGENERE)
-OBJ3=findkey.o $(VIGENERE)
+OBJ=cipher decipher findkey
 
+OBJ_CIPHER=cipher.o $(VIGENERE)
+OBJ_DECIPHER=decipher.o $(VIGENERE)
+OBJ_FINDKEY=findkey.o $(VIGENERE)
 
-cipher: $(OBJ1)
+all: $(OBJ)
+
+cipher: $(OBJ_CIPHER)
 	$(CC) $(OBJ1) -o cipher
-decipher: $(OBJ2)
+decipher: $(OBJ_DECIPHER)
 	$(CC) $(OBJ2) -o decipher 
-findkey: $(OBJ3)
+findkey: $(OBJ_FINDKEY)
 	$(CC) $(OBJ3) -o decipher 	
 	
 	
