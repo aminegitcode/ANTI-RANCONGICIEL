@@ -17,7 +17,7 @@ cipher: $(OBJ_CIPHER)
 decipher: $(OBJ_DECIPHER)
 	$(CC) $(OBJ_DECIPHER) -o decipher 
 findkey: $(OBJ_FINDKEY)
-	$(CC) $(OBJ_DECIPHER) -o decipher 	
+	$(CC) $(OBJ_FINDKEY) -o findkey	
 	
 	
 	
