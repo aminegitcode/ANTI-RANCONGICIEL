@@ -14,16 +14,16 @@ dossier_toolbox=".sh-toolbox"
 
 # verifier si le dossier tool-box existe deja / s'il existe pas on va le creer
 if [ -d $dossier_toolbox ] ; then
-	echo "Le dossier $dossier_toolbox existe deja"
+	echo "Le dossier $dossier_toolbox existe déja"
 else
-	echo "Creation du dossier $dossier_toolbox ..."
+	echo "Création du dossier $dossier_toolbox ..."
 	mkdir $dossier_toolbox
 
 	#verifier si le dossier a ete cree avec succes
 	if [ $? -eq 0 ] ;then
-		echo "Creation reussi !"
+		echo "Création rèussi !"
 	else
-		echo "Le dossier $dossier_toolbox n'a pas pu etre cree"
+		echo "Le dossier $dossier_toolbox n'a pas pu etre crée"
 		exit 1
 	fi
 fi
@@ -35,14 +35,14 @@ echo " "
 
 # verifier l'existence du fichier archives dans .sh-toolbox
 if [ -f $chemin_archives ] ; then
-	echo "Le fichier $fichier_archives existe deja dans $dossier_toolbox"
+	echo "Le fichier $fichier_archives existe déja dans $dossier_toolbox"
 else
-	echo "Creation du fichier $fichier_archives ..."
+	echo "Création du fichier $fichier_archives ..."
 	echo 0 > $chemin_archives
 	if [ $? -eq 0 ] ; then
-		echo "Creation reussi !"
+		echo "Création réussi !"
 	else
-		echo "Le fichier $fichier_archives n'a pas pu etre cree"
+		echo "Le fichier $fichier_archives n'a pas pu etre crée"
 		exit 1
 	fi
 fi
@@ -56,5 +56,5 @@ if [ $nb_lignes -ne 0 ]; then
 	exit 2
 fi
 echo " "
-echo "Initialisation terminee avec succes !"
+echo "Initialisation terminée avec succés !"
 exit 0

@@ -5,7 +5,7 @@ if [ $# -ne 0 ] ; then
 	exit 1
 fi
 
-echo "Restauration de l'environnement de travail..."
+echo "Réstauration de l'environnement de travail..."
 echo ""
 dossier_toolbox=.sh-toolbox
 fichier_archives=archives
@@ -14,7 +14,7 @@ chemin_fichier_archives="$dossier_toolbox/$fichier_archives"
 
 # verifier l'existence du dossier sh-toolbox
 if [ ! -d $dossier_toolbox ]; then
-	echo "Le fichier $dossier_toolbox n'existe pas"
+	echo "Le fichier $dossier_toolbox n'éxiste pas"
 	echo "voulez vous initialiser l'environnement de travail (1:oui / 0:non)"
 	echo ""
 	# Creation et initialisation du dossier .sh-toolbox
@@ -27,27 +27,24 @@ else
 	echo "Le dossier $dossier_toolbox existe"
 fi
 
-echo ""
-
 #verifier l'existence du fichier archives
 if [ ! -f "$chemin_fichier_archives" ]; then 
 	echo "Le fichier $fichier_archives n'existe pas"
-	echo "Voulez-vous creer le fichier archives ? (1:oui / 0:non)"
+	echo "Voulez-vous créer le fichier archives ? (1:oui / 0:non)"
 	echo ""
 	
 	# Creation et initialisation du fichier 'archives'
-	echo "creation du fichier 'archives'..."
+	echo "création du fichier 'archives'..."
 	echo 2 > $chemin_fichier_archives
 	if [ $? -eq 0 ] ;then
-		echo "Creation reussi !"
+		echo "Création réussi !"
 	else
-		echo "erreur de creation du fichier '$fichier_archives'"
+		echo "erreur de création du fichier '$fichier_archives'"
 		exit 1
 	fi
 else
 	echo "Le fichier $fichier_archives existe"
 fi
-echo ""
 
 
 # verifier si des archives existent dans le fichier 'archives' mais pas dans le dossier '.sh-toolbox'
@@ -56,7 +53,7 @@ tail -n +2 "$chemin_fichier_archives" | while IFS=":" read nom date cle; do
 	# Verification pour chaque archive 
 	if [ ! -f "$dossier_toolbox/$nom" ] ; then 
 		echo "L'archive '$nom' existe dans '$fichier_archives' mais n'existe pas dans le dossier '$dossier_toolbox'"
-		read -p "Voulez-vous supprimer  '$nom'  du fichier '$fichier_archives' ? (1:oui / 0:non)" reponse0 </dev/tty
+		read -p "Voulez-vous supprimer  '$nom'  du fichier '$fichier_archives' ? (1:oui / 0:non)" reponse0 
 		
 		# Suppression de cette archive
 		if [ $reponse0 -eq 1 ] ; then
@@ -69,7 +66,7 @@ tail -n +2 "$chemin_fichier_archives" | while IFS=":" read nom date cle; do
 			# copier le fichier tmp dans 'archives'
 			mv "$fichier_tmp" "$chemin_fichier_archives"
 			if [ $? -eq 0 ]; then
-				echo "suppression reussie "
+				echo "suppression réussie "
 			else
 				echo "Echec de suppression"
 			fi
@@ -98,7 +95,7 @@ for fichier in "$dossier_toolbox"/*.gz; do
         		echo "suppression en cours..."
         		rm "$fichier"
         		if [ $? -eq 0 ]; then
-        			echo "suppression reussie"
+        			echo "suppression réussie"
         		else
         			echo "Echec de suppression"
         		fi
@@ -108,5 +105,5 @@ for fichier in "$dossier_toolbox"/*.gz; do
 done
 
 
-echo "Restauration reussie "
+echo "Réstauration réussie "
 exit 0
