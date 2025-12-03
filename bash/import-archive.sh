@@ -64,8 +64,8 @@ for archive in "$@"; do
 	# Mise à jour du fichier archives
 	
 	# Creation du fichier tmp
-	touch ".sh-toolbox/tmp"
 	tmp_file=".sh-toolbox/tmp"
+	touch "$tmp_file"
 	
 	# verifier si l'archive est prensente dans le fichier archives
 	if grep "^$nom_archive:" "$fichier_archives" > /dev/null 2>&1 ; then

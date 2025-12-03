@@ -10,6 +10,7 @@ echo ""
 dossier_toolbox=.sh-toolbox
 fichier_archives=archives
 chemin_fichier_archives="$dossier_toolbox/$fichier_archives"
+fichier_tmp="$dossier_toolbox/tmp"
 
 
 # verifier l'existence du dossier sh-toolbox
@@ -65,7 +66,8 @@ tail -n +2 "$chemin_fichier_archives" | while IFS=":" read nom date cle; do
 		
 			echo "suppression en cours..."
 			# Creer un fichier temporaire 
-			fichier_tmp="$dossier_toolbox/tmp"
+			
+			
 			#Recuperer et decrementer la 1er ligne 
 			compteur=$(head -n 1 "$chemin_fichier_archives")
         		compteur=$((compteur - 1))
@@ -101,18 +103,30 @@ for fichier in "$dossier_toolbox"/*.gz; do
     
 	if  ! grep -q "^$nom_fichier:" "$chemin_fichier_archives"  ; then
 	        echo "Avertissement: $nom_fichier existe dans $dossier_toolbox mais n'est pas mentionné dans le fichier '$fichier_archives'"
-	        echo "Voulez-vous supprimer le fichier $fichier du dossier $dossier_toolbox ? (1:oui / 0:non)"
+	        echo "Voulez-vous supprimer le fichier $fichier du dossier $dossier_toolbox ou bien l'ajouter au fichier 'archives' ? (2:ajouter/ 1:supprimer/ 0: rien faire)"
 	        read reponse1
-		if [ $reponse1 -eq 1 ] ; then
+		if [ $reponse1 -eq 1 ] ; then #Supprimer l'archive du dossier 
         		echo "suppression en cours..."
         		rm "$fichier"
         		if [ $? -eq 0 ]; then
-        			echo "suppression réussie"
+        			echo "suppression reussie"
         		else
         			echo "Echec de suppression"
         		fi
         		echo ""
-    		fi	
+    		elif [ $reponse1 -eq 2 ] ; then #Ajouter l'archive au fichier archives
+    			date_ajout=$(date +"%y%m%d-%H%M%S")
+    			
+    			#Recuperer et incrementer la 1er ligne 
+			compteur=$(head -n 1 "$chemin_fichier_archives")
+        		compteur=$((compteur + 1))
+        		touch "$fichier_tmp"
+			echo "$compteur" > "$fichier_tmp"
+			tail -n +2 "$chemin_fichier_archives" >> "$fichier_tmp"
+        	    	echo "$nom_fichier:$date_ajout:" >> "$fichier_tmp"
+        	    	
+        	    	mv $fichier_tmp $chemin_fichier_archives
+    		fi
 	fi
 done
 

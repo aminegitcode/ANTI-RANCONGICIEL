@@ -4,6 +4,18 @@
 dossier=".sh-toolbox"
 fichier_archives="$dossier/archives"
 
+
+tmp_dossier="$dossier/temp"
+log_fichier="$tmp_dossier/var/log/auth.log"
+log_tmp="$dossier/tmp_log"
+data_dossier="$tmp_dossier/data"
+data_tmp="$dossier/data_tmp" #Une copie du dossier des données
+data_modifie_tmp="$dossier/data_modifie_tmp" #Un fichier pour sauvegarder les fichiers modifiés de l'archive
+touch "$data_modifie_tmp"
+
+
+
+
 # Verifier l'existence du dossier .sh-toolbox
 if [ ! -d "$dossier" ]; then
     echo "Erreur : le dossier '$dossier' n'existe pas."
@@ -54,7 +66,6 @@ if [ ! -f "$archive" ]; then
 fi
 
 
-tmp_dossier="$dossier/temp"
 
 # Creer le dossier temporaire s'il n'existe pas
 if [ ! -d $tmp_dossier ];then
@@ -70,8 +81,8 @@ if [ $? -ne 0 ]; then
 fi
 
 
-log_fichier="$tmp_dossier/var/log/auth.log"
-echo "$log_fichier"
+
+
 
 # Verifier l'existence du fichier Log 
 if [ ! -f "$log_fichier" ]; then
@@ -90,7 +101,7 @@ if [ $reponse -eq 1 ]; then
 fi
 
 
-log_tmp="$dossier/tmp_log"
+
 
 # Recuperer toutes les tentatives de connexions reussies de admin et copier la derniere tentative dans un fichier temporaire 
 grep "Accepted password for admin" "$log_fichier" | tail -n 1 > "$log_tmp"
@@ -109,10 +120,7 @@ echo ""
 
 
 # Afficher les fichiers modifiés  apres la derniere connexion de admin
-data_dossier="$tmp_dossier/data"
-data_tmp="$dossier/data_tmp"
-data_modifie_tmp="$dossier/data_modifie_tmp" #Un fichier pour sauvegarder les fichiers modifiés de l'archive
-touch "$data_modifie_tmp"
+
 # Vérifier si le dossier de données est vide
 if [ ! "$(ls -A "$data_dossier")" ]; then
     echo "Erreur : le dossier '$data_dossier' est vide."
