@@ -104,9 +104,15 @@ echo ""
 # Afficher les fichiers modifiés  apres la derniere connexion de admin
 data_dossier="$tmp_dossier/data"
 data_tmp="$dossier/data_tmp"
+
+# Vérifier si le dossier de données est vide
+if [ ! "$(ls -A "$data_dossier")" ]; then
+    echo "Erreur : le dossier '$data_dossier' est vide."
+    exit 5
+fi
 find "$data_dossier" -type f > "$data_tmp" # Copier tous les fichiers qui existent dans le dossier data dans un fichier temporaire
 
-date_connexion_admin=$(date -d "$mois $jour $heure" +%s) # transformer la date de la derniere connexion de l'admin en format unix ( on va l'utiliser plus pour comparer avec la date de modification des fichiers)
+date_connexion_admin=$(date -d "$mois $jour $heure" +%s) # Transformer la date de la derniere connexion de l'admin en format unix ( on va l'utiliser plus pour comparer avec la date de modification des fichiers)
 
 echo "Fichiers modifiés apres la derniere connexion de admin :"
 nb_fich=0

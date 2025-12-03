@@ -52,7 +52,7 @@ while IFS=":" read nom date cle; do
 done < "$chemin_fichier_archives"
 
 if [ "$nb_archives" -eq 0 ];then
-	echo "<Accune archive>"
+	echo "Accune archive>"
 fi
 
 
@@ -60,7 +60,8 @@ fi
 for fichier in "$dossier_toolbox"/*.gz; do
     nom_fichier=$(basename "$fichier")
 
-    if [ ! -e "$fichier" ];then
+	# Verifier l'existence du fichier selectioné pour eviter le cas le oú accun fichier existe et "$dossier_toolbox/*.gz" sera consideré comme un nom de fichier
+    if [ ! -e "$fichier" ];then 
     	continue
     fi
     if  ! grep -q "^$nom_fichier:" "$chemin_fichier_archives"  ; then

@@ -31,16 +31,21 @@ fi
 if [ ! -f "$chemin_fichier_archives" ]; then 
 	echo "Le fichier $fichier_archives n'existe pas"
 	echo "Voulez-vous créer le fichier archives ? (1:oui / 0:non)"
-	echo ""
+	read rep
 	
-	# Creation et initialisation du fichier 'archives'
-	echo "création du fichier 'archives'..."
-	echo 2 > $chemin_fichier_archives
-	if [ $? -eq 0 ] ;then
-		echo "Création réussi !"
+	if [ $rep -eq 1 ] ; then
+		# Création et initialisation du fichier 'archives'
+		echo "création du fichier 'archives'..."
+		echo 0 > $chemin_fichier_archives
+		if [ $? -eq 0 ] ;then
+			echo "Création réussi !"
+		else
+			echo "erreur de création du fichier '$fichier_archives'"
+			exit 1
+		fi
 	else
-		echo "erreur de création du fichier '$fichier_archives'"
-		exit 1
+		echo "Impossible de continuer sans le fichier 'archvies'"
+		exit 2
 	fi
 else
 	echo "Le fichier $fichier_archives existe"
@@ -53,14 +58,18 @@ tail -n +2 "$chemin_fichier_archives" | while IFS=":" read nom date cle; do
 	# Verification pour chaque archive 
 	if [ ! -f "$dossier_toolbox/$nom" ] ; then 
 		echo "L'archive '$nom' existe dans '$fichier_archives' mais n'existe pas dans le dossier '$dossier_toolbox'"
-		read -p "Voulez-vous supprimer  '$nom'  du fichier '$fichier_archives' ? (1:oui / 0:non)" reponse0 
+		read -p "Voulez-vous supprimer  '$nom'  du fichier '$fichier_archives' ? (1:oui / 0:non)" reponse0 </dev/tty #Forcer read á lire depuis l'entré standard 
 		
 		# Suppression de cette archive
 		if [ $reponse0 -eq 1 ] ; then
+		
 			echo "suppression en cours..."
 			# Creer un fichier temporaire 
 			fichier_tmp="$dossier_toolbox/tmp"
-			head -n 1 "$chemin_fichier_archives" > "$fichier_tmp"
+			#Recuperer et decrementer la 1er ligne 
+			compteur=$(head -n 1 "$chemin_fichier_archives")
+        		compteur=$((compteur - 1))
+			echo "$compteur" > "$fichier_tmp"
 			tail -n +2 "$chemin_fichier_archives" | grep -v "^$nom" >> "$fichier_tmp"
 			
 			# copier le fichier tmp dans 'archives'
@@ -85,7 +94,10 @@ echo ""
 # verifier si une archive existe dans le dossier .sh-toolbox mais n'est pas dans le fichier archives
 for fichier in "$dossier_toolbox"/*.gz; do
     nom_fichier=$(basename "$fichier")
-
+	# Verifier l'existence du fichier selectioné pour eviter le cas le oú accun fichier existe et "$dossier_toolbox/*.gz" sera consideré comme un nom de fichier
+    if [ ! -e "$fichier" ];then 
+    	continue
+    fi
     
 	if  ! grep -q "^$nom_fichier:" "$chemin_fichier_archives"  ; then
 	        echo "Avertissement: $nom_fichier existe dans $dossier_toolbox mais n'est pas mentionné dans le fichier '$fichier_archives'"

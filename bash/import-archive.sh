@@ -89,7 +89,7 @@ for archive in "$@"; do
 		echo "Date mise à jour pour '$nom_archive'."
 	
     	else
-    		#Recuperer la premiere ligne pour incrementer sa valeur
+    		#Recuperer la première ligne pour incrementer sa valeur
         	compteur=$(head -n 1 "$fichier_archives")
         	compteur=$((compteur + 1))
        	
