@@ -2,13 +2,13 @@
 
 CC=gcc
 
-VIGENERE=vigenere.o
-VIGENERE_SRC=vigenere.c vigenere.h
+
+
 OBJ=cipher decipher findkey
 
-OBJ_CIPHER=cipher.o $(VIGENERE)
-OBJ_DECIPHER=decipher.o $(VIGENERE)
-OBJ_FINDKEY=findkey.o $(VIGENERE)
+OBJ_CIPHER=cipher.o vigenere.o
+OBJ_DECIPHER=decipher.o vigenere.o
+OBJ_FINDKEY=findkey.o vigenere.o
 
 all: $(OBJ)
 
@@ -27,9 +27,12 @@ decipher.o: decipher.c vigenere.h
 	$(CC) -c decipher.c
 findkey.o: findkey.c vigenere.h
 	$(CC) -c findkey.c
-$(VIGENERE): $(VIGENERE_SRC)
+vigenere.o: vigenere.c vigenere.h
 	$(CC) -c vigenere.c
 	
+	
+libvigenere.a: $(VIGENERE)
+	ar rcs libvigenere.a vigenere.o
 
 
 clean:
