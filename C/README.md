@@ -33,7 +33,7 @@ Le projet comprend trois programmes principaux et une bibliothèque réutilisabl
     base64 exemple1.txt > exemple1(64).txt
     mv exemple1(64).txt exemple1.txt
      
-    # le cas d'une image
+    --- le cas d'une image ---
     base64 image.jpg > image.txt 
     
 ###decodage
