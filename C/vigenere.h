@@ -10,7 +10,7 @@ extern const char alphabet[64];
 
 
 void chiffrer_vigenere(char *texte, const char *cle);
-void dechiffrer(char texte[], char cle[]) ;
+void dechiffrer(unsigned char texte[], char cle[]) ;
 char* findkey (char *txt_clair,char*  txt_chiff);
 int position (char caractere,const char liste_caractere[],int longeur_liste);
 int periode(char *chaine, int n);

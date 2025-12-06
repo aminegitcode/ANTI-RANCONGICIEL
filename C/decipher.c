@@ -1,7 +1,7 @@
 #include "vigenere.h"
 
 int main(int argc, char *argv[]) {
-    char *contenu_fichier;
+    unsigned char *contenu_fichier;
     
     /* Verifier les arguments */
     if (argc != 3) {

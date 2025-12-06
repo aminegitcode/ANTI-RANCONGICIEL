@@ -185,7 +185,7 @@ while read fichier ; do
                     taille_fichier_modif=$(stat -c %s "$fichier_modif")
                     nom_fichier_modif=$(basename "$fichier_modif")
                     if [ "$(basename "$fichier")" == "$nom_fichier_modif" ] && [ "$taille_fichier" -eq "$taille_fichier_modif" ]; then
-                        echo "$fichier correspond au fichier modifié '$fichier_modif' "
+                        echo "$fichier "
                         nb_fich=$((nb_fich + 1))
                     fi
                 done

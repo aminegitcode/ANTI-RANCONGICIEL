@@ -8,23 +8,6 @@ const char alphabet[64] = {
     '0','1','2','3','4','5','6','7','8','9',
     '+','/'
 };
-
-void chiffrer_vigenere(char *texte, const char *cle) {
-    const char *alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    int len = strlen(cle), j = 0; // Récuperer la longueur de la cle 
-
-    for (int i=0; texte[i]; i++) {
-        char *p1 = strchr(alphabet, texte[i]);   // cherche le caractere texte[i] dans l’alphabet
-        if(!p1) continue;//Ignore les caractères non Base64 
-
-        char *p2 = strchr(alphabet, cle[j % len]);          // position clé
-        int pos = (p1 - alphabet + (p2 - alphabet)) % 64;   // Vigenère mod 64
-
-        texte[i] = alphabet[pos];                           // remplace dans le texte
-        j++;
-    }
-}
-
 // Trouver la position d'un carctere dans une chaine 
 int position (char caractere, const char liste_caractere[],int longeur_liste){
   for (int i=0; i<longeur_liste; i++){
@@ -36,41 +19,65 @@ int position (char caractere, const char liste_caractere[],int longeur_liste){
 }
 
 
+void chiffrer_vigenere(char *texte, const char *cle) {
+    int longeur_cle = strlen(cle);
+    int j=0;
+
+    for (int i=0; texte[i]; i++) {
+        int pos_carctere = position(texte[i],alphabet,64);  // Chercher le caractére texte[i] dans l’alphabet
+
+        if (pos_carctere != -1){ //Assurer que le caractére existe
+            // Chercher la position de la clé
+            int pos_cle = position(cle[j%(longeur_cle)],alphabet,64);
+            
+            while(pos_cle == -1){ //Tant que le caractére n'existe pas on avance au suivant (dans la clé)
+              j++;
+              pos_cle = position(cle[j%(longeur_cle)],alphabet,64);
+            }
+            // Chiffrement 
+            if(pos_cle!=-1){
+              int pos = (pos_carctere + pos_cle ) % 64; // 
+              texte[i] = alphabet[pos];
+            }
+            j++;
+        }
+    }
+}
+
+
+
+
 // Dechiffrement 
-void dechiffrer(char texte[], char cle[]) {
+void dechiffrer(unsigned char texte[], char cle[]) {
     
 
-
     int longeur_cle = strlen(cle);
+    int longueur_chaine=strlen(texte);
     int j = 0;
 
-    for (int i = 0; texte[i]; i++) {
+    for (int i = 0; i<longueur_chaine; i++) {
         // Chercher la position du caractére dans l'alphabet
         int pos_carctere = position(texte[i],alphabet,64);
         
-        if (pos_carctere != -1){ 
+        if (pos_carctere != -1){  //Assurer que le caractére existe
 
             // Chercher la position de la clé
-            int pos_cle = position(cle[j%longeur_cle],alphabet,64);
-
-            // Dechiffrement modulo 64
-            int pos = (pos_carctere - pos_cle + 64) % 64; // On ajoute (+64) pour eviter le cas negatif (pos_cle > pos_caractere)
-            texte[i] = alphabet[pos];
+            int pos_cle = position(cle[j%(longeur_cle)],alphabet,64);
+            while(pos_cle == -1){ //Tant que le caractére n'existe pas on avance au suivant (dans la clé)
+              j++;
+              pos_cle = position(cle[j%(longeur_cle)],alphabet,64);
+            }
+            // Dechiffrement 
+            if(pos_cle!=-1){
+              int pos = (pos_carctere - pos_cle + 64) % 64; // On ajoute (+64) pour eviter le cas negatif (pos_cle > pos_caractere)
+              texte[i] = alphabet[pos];
+            }
             j++;
         }
     } 
 }
 
 char* findkey (char *txt_clair,char*  txt_chiff){
-    // Alphabet Base64 
-    char alphabet[64] = {
-        'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
-        'Q','R','S','T','U','V','W','X','Y','Z',
-        'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
-        'q','r','s','t','u','v','w','x','y','z',
-        '0','1','2','3','4','5','6','7','8','9',
-        '+','/'
-    };
     int longueur=strlen(txt_clair); 
     char *cle=(char*)malloc(longueur); 
     char *cle_finale=(char*)malloc(longueur); 
@@ -91,16 +98,14 @@ char* findkey (char *txt_clair,char*  txt_chiff){
         j++;
       }
     }
-     cle[j] = '\0'; 
- 
+
      
      // Trouver la periode
      int p=periode(cle,j);
      strncpy(cle_finale,cle,p);
-     cle_finale[p]='\0';
+
      free(cle);
     
-
     return cle_finale;
 
 }
