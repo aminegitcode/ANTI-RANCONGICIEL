@@ -21,13 +21,30 @@ Le projet comprend trois programmes principaux et une bibliothèque réutilisabl
     ├── Makefile            # Script de compilation
     └── README.md           # Documentation (ce fichier)
 
-## Compilation et Encodage\Decodage
+## Compilation Encodage/Decodage
     - Commande `make`
     - Commande `base64` pour coder en base 64
     - Commande `base64 -- decode` pour decoder 
+    
+#Compilation
+    make
+    
+##Encodage
+    base64 exemple1.txt > exemple1(64).txt
+    mv exemple1(64).txt exemple1.txt
+     
+    # le cas d'une image
+    base64 image.jpg > image.txt 
+    
+###decodage
+    base64 --decode exemple1.txt > exemple1(dec).txt
+    mv exemple1(dec).txt exemple1.txt
+    
+    --- le cas d'une image ---
+    base64 --decode image.txt > image.png
+    
 
 ## Utilisation des programmes
-
 ### 1. Programme `cipher` - Chiffrement
        - Lit un fichier encodé en Base64
        - Applique le chiffrement Vigenère
@@ -40,7 +57,7 @@ Le projet comprend trois programmes principaux et une bibliothèque réutilisabl
 
     ./cipher CleSAE2025 exemple1.txt
     Chiffrement du fichier: exemple1.txt
-    Avec la clé: CleSAE2025
+    Avec la clé: Q2xlU0FFMjAyNQ==
     Application du chiffrement Vigenère
     Chiffrement terminé avec succès!
 
@@ -55,7 +72,7 @@ Le projet comprend trois programmes principaux et une bibliothèque réutilisabl
 
     ./decipher CleSAE2025 exemple1.txt
     Déchiffrement du fichier: exemple1.txt
-    Avec la clé: CleSAE2025
+    Avec la clé: Q2xlU0FFMjAyNQ==
 
     Déchiffrement...
     Déchiffrement terminé avec succès!
