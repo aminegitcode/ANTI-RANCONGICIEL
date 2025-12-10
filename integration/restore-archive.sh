@@ -9,7 +9,7 @@ if [ $# -ne 1 ];then
 	exit 1
 fi
 
-#Créer le dossier destinatino s'il nexiste pas
+#Créer le dossier destination s'il nexiste pas
 if [ ! -d "$1" ];then
 	mkdir "$1"
 	if [ $? -ne 0 ];then
