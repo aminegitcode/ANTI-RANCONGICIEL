@@ -94,7 +94,7 @@ Tous les fichiers restaurés seront dans le dossier out/.
 
 Pour plus de détails sur chaque partie du projet, consultez les README spécifiques :
 
-- [README Bash (.sh-toolbox)](bash/README.md) – Gestion et analyse des archives
+- [README Bash (.sh-toolbox)](bash/readme.md) – Gestion et analyse des archives
 - [README C (Vigenère/Base64)](src/README.md) – Chiffrement et déchiffrement
 - [README Intégration](README_INTEGRATION.md) – Intégration finale et restauration automatique
 
