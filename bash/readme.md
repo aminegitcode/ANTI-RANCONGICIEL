@@ -153,8 +153,4 @@ Exemple réel :
     .sh-toolbox/temp/data/ccbf4b29f3/exemple1.txt
     .sh-toolbox/temp/data/ccbf4b29f3/exemple2.jpg
     
-## Auteurs
-Cylia Djafri	
-Amine Djabri	
-## Établissement
-Université de Picardie — Jules Verne
+
