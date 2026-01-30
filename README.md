@@ -46,8 +46,23 @@ Le scénario est **fictif et pédagogique**, destiné à la formation en cybers�
 └── README.md 
 ```
 
-## ⚙️ Étapes pour utiliser le projet
+## ⚙️ Étapes pour utiliser le projet (Partie Intégration)
 
+Dans cette section, nous utilisons **la partie Intégration** du projet pour restaurer les fichiers chiffrés.  
+Le dossier `integration` contient tous les scripts et binaires nécessaires pour combiner Bash et C.
+
+### 0️⃣ Préparer l’environnement
+
+1. Cloner ou télécharger le projet sur votre machine.  
+2. Se rendre dans le dossier d’intégration :
+
+```bash
+git clone https://github.com/aminegitcode/ANTI-RANCONGICIEL.git
+cd integration
+```
+3. Les archives à restaurer sont disponibles dans le dossier Données/archives.
+Vous pouvez passer directement le chemin complet de l’archive au moment de l’appel du script.
+Ou bien copier les archives dans le dossier courant (integration) avant d’exécuter les scripts.
 ### 1️⃣ Initialiser l’environnement de travail
 
 ```bash
@@ -66,12 +81,21 @@ Nettoyage des fichiers objets
 ```
 ### 2️⃣ Importer des archives dans .sh-toolbox
 ```bash
-./import-archive.sh [-f] archive1.tar.gz archive2.tar.gz
+./import-archive.sh [-f] <chemin/vers/archive1.tar.gz> <chemin/vers/archive2.tar.gz>
 ```
   - Copie les archives dans .sh-toolbox/
   - Met à jour le fichier archives
   - Demande confirmation si une archive existe déjà
 
+    Exemple avec les archives du projet :
+   ```bash
+   ./import-archive.sh ../../data/archives/groupe1.tar.gz ../../data/archives/groupe2.tar.gz
+   ```
+
+   Vous pouvez aussi copier directement les fichiers .tar.gz dans le dossier courant et utiliser :
+   ```bash
+   ./import-archive.sh groupe1.tar.gz groupe2.tar.gz
+   ```
 ### 3️⃣ Restaurer les fichiers chiffrés
 ```bash 
 ./restore-archive.sh <dossier_destination>
@@ -94,8 +118,8 @@ Tous les fichiers restaurés seront dans le dossier out/.
 
 Pour plus de détails sur chaque partie du projet, consultez les README spécifiques :
 
-- [README Bash (.sh-toolbox)](bash/readme.md) – Gestion et analyse des archives
-- [README C (Vigenère/Base64)](src/README.md) – Chiffrement et déchiffrement
+- [README Bash ](bash/readme.md) – Gestion et analyse des archives
+- [README C ](src/README.md) – Chiffrement et déchiffrement
 - [README Intégration](README_INTEGRATION.md) – Intégration finale et restauration automatique
 
 Chaque README contient des instructions détaillées et des exemples pour chaque script ou programme.
