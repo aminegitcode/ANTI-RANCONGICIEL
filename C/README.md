@@ -96,9 +96,4 @@ Le projet comprend trois programmes principaux et une bibliothèque réutilisabl
 
 Le projet génère une bibliothèque statique `libvigenere.a` réutilisable
 
-## Auteurs
-CYLIA DJAFRI
-AMINE DJABRI
 
-## Établissement
-Université de Picardie — Jules Verne
