@@ -5,7 +5,7 @@ dossier=".sh-toolbox"
 fichier_archives="$dossier/archives"
 
 
-tmp_dossier="$dossier/temp"
+tmp_dossier="$dossier/temp" #Dossier temporaire pour decompresser l'archive
 log_fichier="$tmp_dossier/var/log/auth.log"
 log_tmp="$dossier/tmp_log"
 data_dossier="$tmp_dossier/data"
@@ -73,11 +73,11 @@ if [ ! -d $tmp_dossier ];then
 fi
 
 # Decompression de l’archive dans le dossier temporaire.
-tar -xzf "$archive" -C "$tmp_dossier" #extraire l’archive gzip dont le nom est dans "$archive"
+tar -xzf "$archive" -C "$tmp_dossier" #extraire l’archive dont le nom est dans "$archive"
 if [ $? -ne 0 ]; then
     echo "Erreur : echec de la décompression."
     exit 3
-    rm -rf "$tmp_dossier" # forcer la suppression de "tmp_dossier" avec -f
+    rm -rf "$tmp_dossier" #Suppression de tmp_dossier
 fi
 
 
@@ -139,7 +139,7 @@ while read fichier ; do
 	date_modif_fichier=$(stat -c %Y "$fichier")
 	
 	# Comparer la date de modification du fichier avec la date de la derniere connexion de admin
-	if [ "$date_modif_fichier" -gt "$date_connexion_admin" ] ;then 
+	if [ "$date_modif_fichier" -ge "$date_connexion_admin" ] ;then 
 		echo "$fichier"
 		 echo "$fichier" >> "$data_modifie_tmp" #Sauvegarder le fichier modifié dans un fichier temporaire 
 		
@@ -166,7 +166,7 @@ while read fichier ; do
     permissions=$(stat -c %a "$fichier")  # Récupérer les permissions du fichier 
     
     # Vérifier si la dernière permission est égale à 4 (lecture seule)
-   if [ $(($permissions % 10)) -eq 4 ]; then  # Vérifie si le fichier est en lecture seule 
+   if  [ $(($permissions % 10)) -eq 4 ] || [ $(($permissions % 10)) -eq 5 ] ; then  
         
         # Vérifier si le fichier n'appartient pas à "admin"
         utilisateur=$(stat -c %U "$fichier")
@@ -181,14 +181,16 @@ while read fichier ; do
                 taille_fichier=$(stat -c %s "$fichier")
                
                 # Comparer le nom et la taille avec les fichiers modifiés
-                for fichier_modif in $(cat "$data_modifie_tmp"); do
-                    taille_fichier_modif=$(stat -c %s "$fichier_modif")
-                    nom_fichier_modif=$(basename "$fichier_modif")
-                    if [ "$(basename "$fichier")" == "$nom_fichier_modif" ] && [ "$taille_fichier" -eq "$taille_fichier_modif" ]; then
-                        echo "$fichier "
-                        nb_fich=$((nb_fich + 1))
-                    fi
-                done
+                while read -r fichier_modif; do
+		    taille_fichier_modif=$(stat -c %s "$fichier_modif")
+		    nom_fichier_modif=$(basename "$fichier_modif")
+
+		    if [ "$(basename "$fichier")" = "$nom_fichier_modif" ] && [ "$taille_fichier" -eq "$taille_fichier_modif" ]; then
+			echo "$fichier"
+			nb_fich=$((nb_fich + 1))
+			break   # ← IMPORTANT : évite les doublons
+		    fi
+		done < "$data_modifie_tmp"
             fi
         fi
     fi

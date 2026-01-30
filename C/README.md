@@ -1,7 +1,7 @@
 
 ## Description du projet
 
-Ce projet implémente un système de chiffrement/déchiffrement basé sur le chiffre de Vigenère adapté pour fonctionner avec l'encodage Base64.
+Ce projet présente un système de chiffrement/déchiffrement Vigenère qui fonctionne sur des fichier encodé en Base64.
 Le projet comprend trois programmes principaux et une bibliothèque réutilisable.
 
 ### Principe de fonctionnement
@@ -14,11 +14,11 @@ Le projet comprend trois programmes principaux et une bibliothèque réutilisabl
 ##  Structure des fichiers
     
     ├── vigenere.h          # pour les déclarations
-    ├── vigenere.c          # Implémentation des fonctions
+    ├── vigenere.c          # Ecriture des fonctions
     ├── cipher.c            # Programme de chiffrement
     ├── decipher.c          # Programme de déchiffrement
     ├── findkey.c           # Programme pour trouver la clé
-    ├── Makefile            # Script de compilation
+    ├── Makefile            # Compilation
     └── README.md           # Documentation (ce fichier)
 
 ## Compilation Encodage/Decodage
@@ -55,7 +55,7 @@ Le projet comprend trois programmes principaux et une bibliothèque réutilisabl
 
 **Exemple complet:**
 
-    ./cipher CleSAE2025 exemple1.txt
+    ./cipher Q2xlU0FFMjAyNQ== exemple1.txt
     Chiffrement du fichier: exemple1.txt
     Avec la clé: Q2xlU0FFMjAyNQ==
     Application du chiffrement Vigenère
@@ -70,7 +70,7 @@ Le projet comprend trois programmes principaux et une bibliothèque réutilisabl
 
 **Exemple complet:**
 
-    ./decipher CleSAE2025 exemple1.txt
+    ./decipher Q2xlU0FFMjAyNQ== exemple1.txt
     Déchiffrement du fichier: exemple1.txt
     Avec la clé: Q2xlU0FFMjAyNQ==
 
@@ -100,5 +100,5 @@ Le projet génère une bibliothèque statique `libvigenere.a` réutilisable
 CYLIA DJAFRI
 AMINE DJABRI
 
-## Établissement
+## Etablissement
 Université de Picardie — Jules Verne

@@ -32,7 +32,7 @@ int main( int argc, char *argv[]){
     
     int longueur_cle=strlen(cle);// Trouver la longeur de la clé
     printf("\nLa clé est : %s",cle); //Afficher la cle sur la sortie standard
-    fprintf(stderr,"Longueur de la clé: %d \n",longueur_cle); //Afficher la longeur sur la sortie d'erreur
+    fprintf(stderr,"Longueur de la clé:%d \n",longueur_cle); //Afficher la longeur sur la sortie d'erreur
     
     // Libérer la mémoire
     free(cle);
